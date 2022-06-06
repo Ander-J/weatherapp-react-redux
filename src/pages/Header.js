@@ -1,11 +1,13 @@
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import styles from '../styles/Header.module.css';
 
-function Header() {
+const Header = () => {
   return (
     <div className="App">
       <div className={styles.header}>
-        <span className={styles.title}>Weather Application</span>
+        <Link to="/" className={styles.title}>
+          Weather Application
+        </Link>
       </div>
     <Outlet />
     </div>

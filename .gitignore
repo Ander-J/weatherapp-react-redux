@@ -12,7 +12,6 @@
 /build
 
 # misc
-/src/features
 .DS_Store
 .env.local
 .env.development.local
