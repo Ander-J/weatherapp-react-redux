@@ -1,5 +1,5 @@
-import { Link, Outlet } from 'react-router-dom';
-import styles from '../styles/Header.module.css';
+import { Link, Outlet } from "react-router-dom";
+import styles from "../styles/Header.module.css";
 
 const Header = () => {
   return (
@@ -9,9 +9,9 @@ const Header = () => {
           Weather Application
         </Link>
       </div>
-    <Outlet />
+      <Outlet />
     </div>
   );
-}
+};
 
 export default Header;
