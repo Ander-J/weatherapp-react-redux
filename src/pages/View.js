@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { selectedWeather } from "../app/weatherSlice";
+import { useParams } from "react-router-dom";
 
 const View = (weather) => {
   /* const [selectedWeather, setSelectedWeather] = useState(null) */

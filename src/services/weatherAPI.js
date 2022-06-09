@@ -10,6 +10,10 @@ export const weatherApi = createApi({
       //gets current data
       query: () => "weather",
     }),
+    getById: builder.query({
+      //gets data by id
+      query: (id) => `weather/${id}`,
+    }),
     updateWeather: builder.query({
       //updates current weather conditions and gets data
       query: () => "weather/update",
@@ -34,6 +38,7 @@ export const weatherApi = createApi({
 
 export const {
   useGetAllQuery,
+  useGetByIdQuery,
   useUpdateWeatherQuery,
   useNewWeatherMutation,
   useDeleteWeatherMutation,
