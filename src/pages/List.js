@@ -10,7 +10,11 @@ import {
 import React, { useEffect, useReducer, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import View from "./View";
-import { setSelectedWeather } from "../app/weatherSlice";
+import { useSelector } from "react-redux";
+import weatherSlice, {
+  selectedWeather,
+  setSelectedWeather,
+} from "../app/weatherSlice";
 import { store } from "../app/store";
 import { useGetAllQuery, weatherApi } from "../services/weatherAPI";
 import { useDispatch } from "react-redux";
@@ -30,8 +34,9 @@ function List() {
   const [isShowView, setShowView] = useState(false);
   const { data, error, isLoading, isSuccess } = useGetAllQuery();
   const dispatch = useDispatch();
+  const weather = useSelector(selectedWeather);
   const navigate = useNavigate();
-  const [weather, setWeather] = useState(null);
+  /* const [weather, setWeather] = useState(null); */
   /* useEffect(() => {
 
   }, [weatherData]) */
@@ -55,10 +60,11 @@ function List() {
                   hover="true"
                   onMouseEnter={() => {
                     dispatch(setSelectedWeather(row));
-                    setWeather(row);
+                    /* setWeather(row); */
                     setShowView(true);
                     {
-                      console.log(store.getState(weather.data));
+                      console.log(weather);
+                      /* console.log(store.getState(selectedWeather.data)); */
                     }
                   }}
                   onMouseLeave={() => setShowView(false)}
@@ -77,7 +83,7 @@ function List() {
       )}
       {error && <p>An error occured</p>}
       {isLoading && <p>Loading...</p>}
-      {isShowView && <View data={weather} />}
+      {isShowView && <View />}
     </div>
   );
 }

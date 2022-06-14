@@ -1,26 +1,43 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { selectedWeather } from "../app/weatherSlice";
 import { useParams } from "react-router-dom";
+import { useGetByIdQuery } from "../services/weatherAPI";
+import NoPage from "./NoPage";
 
-const View = (weather) => {
-  /* const [selectedWeather, setSelectedWeather] = useState(null) */
-  /* useEffect(() => {}, [selectedWeather]); */
-  const isWeatherData = () => {
-    if (weather.data == undefined) {
-      return false;
-    } else return true;
-  };
-  const isWeather = isWeatherData();
+const View = () => {
+  const weather = useSelector(selectedWeather);
+  let params = useParams();
+
   return (
     <>
-      {isWeather && (
+      {weather.id != null ? (
         <>
-          {console.log(weather)}
-          <h1>{weather.data.location}</h1>
-          <h1>Temperature: {weather.data.temp}</h1>
+          {console.log("using local data")}
+          <h1>{weather.location}</h1>
+          <h1>Temperature: {weather.temp}</h1>
+        </>
+      ) : (
+        GetFromParams(params.id)
+      )}
+    </>
+  );
+};
+
+const GetFromParams = (id) => {
+  const { data, error, isLoading, isSuccess } = useGetByIdQuery(id);
+
+  return (
+    <>
+      {isSuccess && (
+        <>
+          {console.log("fetching data")}
+          <h1>{data.location}</h1>
+          <h1>Temperature: {data.temp}</h1>
         </>
       )}
-      {!isWeather && <p>No data!</p>}
+      {error && <p>An error occured</p>}
+      {isLoading && <p>Loading...</p>}
     </>
   );
 };

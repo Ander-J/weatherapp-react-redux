@@ -4,7 +4,7 @@ import { weatherApi } from "../services/weatherAPI";
 const initialState = {
   status: "loading",
   data: [],
-  selectedWeather: {},
+  selectedWeather: { id: null },
 };
 
 /* export const getAllData = createAsyncThunk(async () => {
