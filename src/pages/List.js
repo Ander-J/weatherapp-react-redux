@@ -6,8 +6,15 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  Button,
+  CircularProgress,
+  LinearProgress,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  TextField,
 } from "@mui/material";
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useReducer, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import View from "./View";
 import { useSelector } from "react-redux";
@@ -18,6 +25,8 @@ import weatherSlice, {
 import { store } from "../app/store";
 import { useGetAllQuery, weatherApi } from "../services/weatherAPI";
 import { useDispatch } from "react-redux";
+import { Delete, Refresh } from "@mui/icons-material";
+import styles from "../styles/List.module.css";
 
 function getData(id, location, lat, lon, temp, weather) {
   return { id, location, lat, lon, temp, weather };
@@ -34,57 +43,82 @@ function List() {
   const [isShowView, setShowView] = useState(false);
   const { data, error, isLoading, isSuccess } = useGetAllQuery();
   const dispatch = useDispatch();
-  const weather = useSelector(selectedWeather);
   const navigate = useNavigate();
-  /* const [weather, setWeather] = useState(null); */
-  /* useEffect(() => {
-
-  }, [weatherData]) */
+  const bottomRef = useRef(null);
 
   return (
-    <div>
-      {isSuccess && (
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Location</TableCell>
-                <TableCell>Temperature</TableCell>
-                <TableCell>Conditions</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {data.map((row) => (
-                <TableRow
-                  key={row.id}
-                  hover="true"
-                  onMouseEnter={() => {
-                    dispatch(setSelectedWeather(row));
-                    /* setWeather(row); */
-                    setShowView(true);
-                    {
-                      console.log(weather);
-                      /* console.log(store.getState(selectedWeather.data)); */
-                    }
-                  }}
-                  onMouseLeave={() => setShowView(false)}
-                  onClick={() => navigate(`/view/${row.id}`)}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.location}
+    <>
+      <div className={styles.table}>
+        {isSuccess && (
+          <TableContainer component={Paper}>
+            <Table size="small">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Location</TableCell>
+                  <TableCell>Temperature</TableCell>
+                  <TableCell>Conditions</TableCell>
+                  <TableCell align="right">
+                    <Button variant="contained">
+                      <Refresh />
+                    </Button>
                   </TableCell>
-                  <TableCell>{row.temp}</TableCell>
-                  <TableCell>{row.weather}</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      )}
+              </TableHead>
+              <TableBody>
+                {data.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    hover={true}
+                    onMouseEnter={() => {
+                      dispatch(setSelectedWeather(row));
+                      setShowView(true);
+                    }}
+                    onMouseLeave={() => setShowView(false)}
+                  >
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      onClick={() => navigate(`/view/${row.id}`)}
+                    >
+                      {row.location}
+                    </TableCell>
+                    <TableCell onClick={() => navigate(`/view/${row.id}`)}>
+                      {row.temp} C°
+                    </TableCell>
+                    <TableCell onClick={() => navigate(`/view/${row.id}`)}>
+                      {row.weather}
+                    </TableCell>
+                    <TableCell align="right">
+                      <Button variant="outlined" color="error">
+                        <Delete />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
+        <Accordion
+          disableGutters={true}
+          onTransitionEnd={() => {
+            bottomRef.current.scrollIntoView({ behavior: "smooth" });
+          }}
+        >
+          <AccordionSummary>Add location...</AccordionSummary>
+          <AccordionDetails>
+            <TextField
+              variant="standard"
+              label="New location"
+              ref={bottomRef}
+            />
+          </AccordionDetails>
+        </Accordion>
+      </div>
       {error && <p>An error occured</p>}
-      {isLoading && <p>Loading...</p>}
+      {isLoading && <LinearProgress />}
       {isShowView && <View />}
-    </div>
+    </>
   );
 }
 

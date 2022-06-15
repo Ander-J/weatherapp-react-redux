@@ -13,7 +13,6 @@ const View = () => {
     <>
       {weather.id != null ? (
         <>
-          {console.log("using local data")}
           <h1>{weather.location}</h1>
           <h1>Temperature: {weather.temp}</h1>
         </>
@@ -31,12 +30,11 @@ const GetFromParams = (id) => {
     <>
       {isSuccess && (
         <>
-          {console.log("fetching data")}
           <h1>{data.location}</h1>
           <h1>Temperature: {data.temp}</h1>
         </>
       )}
-      {error && <p>An error occured</p>}
+      {error && <NoPage />}
       {isLoading && <p>Loading...</p>}
     </>
   );
