@@ -22,7 +22,10 @@ const View = () => {
     </>
   );
 };
-
+/** Makes sure that data still loads even if you don't navigate here from List.
+ *  If selectedWeather in memory is null, then fetch it from backend using params
+ *  in the method below.
+ */
 const GetFromParams = (id) => {
   const { data, error, isLoading, isSuccess } = useGetByIdQuery(id);
 
