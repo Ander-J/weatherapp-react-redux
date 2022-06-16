@@ -4,6 +4,7 @@ import { selectedWeather } from "../app/weatherSlice";
 import { useParams } from "react-router-dom";
 import { useGetByIdQuery } from "../services/weatherAPI";
 import NoPage from "./NoPage";
+import { LinearProgress } from "@mui/material";
 
 const View = () => {
   const weather = useSelector(selectedWeather);
@@ -38,7 +39,7 @@ const GetFromParams = (id) => {
         </>
       )}
       {error && <NoPage />}
-      {isLoading && <p>Loading...</p>}
+      {isLoading && <LinearProgress />}
     </>
   );
 };

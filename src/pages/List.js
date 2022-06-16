@@ -13,6 +13,8 @@ import {
   AccordionSummary,
   AccordionDetails,
   TextField,
+  Alert,
+  Divider,
 } from "@mui/material";
 import React, { useEffect, useReducer, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
@@ -64,42 +66,55 @@ function List() {
                   </TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody>
-                {data.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    hover={true}
-                    onMouseEnter={() => {
-                      dispatch(setSelectedWeather(row));
-                      setShowView(true);
-                    }}
-                    onMouseLeave={() => setShowView(false)}
-                  >
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      onClick={() => navigate(`/view/${row.id}`)}
-                    >
-                      {row.location}
-                    </TableCell>
-                    <TableCell onClick={() => navigate(`/view/${row.id}`)}>
-                      {row.temp} C°
-                    </TableCell>
-                    <TableCell onClick={() => navigate(`/view/${row.id}`)}>
-                      {row.weather}
-                    </TableCell>
-                    <TableCell align="right">
-                      <Button variant="outlined" color="error">
-                        <Delete />
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
+              {data.length > 0 ? (
+                <>
+                  <TableBody>
+                    {data.map((row) => (
+                      <TableRow
+                        key={row.id}
+                        hover={true}
+                        onMouseEnter={() => {
+                          dispatch(setSelectedWeather(row));
+                          setShowView(true);
+                        }}
+                        onMouseLeave={() => setShowView(false)}
+                      >
+                        <TableCell
+                          component="th"
+                          scope="row"
+                          onClick={() => navigate(`/view/${row.id}`)}
+                        >
+                          {row.location}
+                        </TableCell>
+                        <TableCell onClick={() => navigate(`/view/${row.id}`)}>
+                          {row.temp} C°
+                        </TableCell>
+                        <TableCell onClick={() => navigate(`/view/${row.id}`)}>
+                          {row.weather}
+                        </TableCell>
+                        <TableCell align="right">
+                          <Button variant="outlined" color="error">
+                            <Delete />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </>
+              ) : (
+                <>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>Empty Table</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </>
+              )}
             </Table>
           </TableContainer>
         )}
         <Accordion
+          square={true}
           disableGutters={true}
           onTransitionEnd={() => {
             bottomRef.current.scrollIntoView({ behavior: "smooth" });
@@ -112,9 +127,16 @@ function List() {
               label="New location"
               ref={bottomRef}
             />
+            <Button
+              variant="contained"
+              sx={{ marginLeft: "1em", marginTop: "1em" }}
+            >
+              Add...
+            </Button>
           </AccordionDetails>
         </Accordion>
       </div>
+      <Divider />
       {error && <p>An error occured</p>}
       {isLoading && <LinearProgress />}
       {isShowView && <View />}
