@@ -25,7 +25,11 @@ import weatherSlice, {
   setSelectedWeather,
 } from "../app/weatherSlice";
 import { store } from "../app/store";
-import { useGetAllQuery, weatherApi } from "../services/weatherAPI";
+import {
+  useGetAllQuery,
+  weatherApi,
+  useUpdateWeatherQuery,
+} from "../services/weatherAPI";
 import { useDispatch } from "react-redux";
 import { Delete, Refresh } from "@mui/icons-material";
 import styles from "../styles/List.module.css";
@@ -76,6 +80,7 @@ function List() {
                         onMouseEnter={() => {
                           dispatch(setSelectedWeather(row));
                           setShowView(true);
+                          console.log(row);
                         }}
                         onMouseLeave={() => setShowView(false)}
                       >
@@ -143,5 +148,9 @@ function List() {
     </>
   );
 }
+
+/* const update = () => {
+  const updatedData = useUpdateWeatherQuery();
+}; */
 
 export default List;

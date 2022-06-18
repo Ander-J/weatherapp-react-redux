@@ -7,15 +7,15 @@ const initialState = {
   selectedWeather: { id: null },
 };
 
-/* export const getAllData = createAsyncThunk(async () => {
-  const response = weatherApi.useGetAllQuery();
+const getAllData = createAsyncThunk(async () => {
+  const response = await weatherApi.getAll();
   return response.data;
 });
 
-export const getById = createAsyncThunk(async (id) => {
-  const response = weatherApi.useGetByIdQuery(id);
+const getById = createAsyncThunk(async (id) => {
+  const response = await weatherApi.getById(id);
   return response.data;
-}); */
+});
 
 export const weatherSlice = createSlice({
   name: "weather",
@@ -24,6 +24,12 @@ export const weatherSlice = createSlice({
     setSelectedWeather: (state, action) => {
       state.selectedWeather = action.payload;
     },
+    setData: (state, action) => {
+      state.data = action.payload;
+    },
+    /* updateData: (state, action) => {
+      state.data = 
+    } */
   },
   extraReducers: (builder) => {
     /* builder
@@ -39,8 +45,10 @@ export const weatherSlice = createSlice({
   },
 });
 
+export const data = (state) => state.weather.data;
+
 export const selectedWeather = (state) => state.weather.selectedWeather;
 
-export const { setSelectedWeather } = weatherSlice.actions;
+export const { setSelectedWeather, setData } = weatherSlice.actions;
 
 export default weatherSlice.reducer;
